@@ -1,0 +1,45 @@
+name: Build and Push to AWS ECS
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  REPOSITORY_NAME: transformations-repository
+  IMAGE_NAME: dbt-transformations
+  IMAGE_TAG: ${{ GITHUB_SHA::7 }}
+  AWS_REGION: eu-central-1
+
+jobs:
+  build-push:
+    name: Build image
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip')"
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_NAME:latest .
+
+      - name: Tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:latest
+          docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:latest
+          docker push $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:$IMAGE_TAG
