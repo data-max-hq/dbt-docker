@@ -24,7 +24,7 @@ jobs:
 
       - name: Configure AWS credentials
         env:
-          aws_region: $AWS_REGION
+          aws_default_region: $AWS_REGION
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
