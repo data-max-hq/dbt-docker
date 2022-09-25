@@ -8,7 +8,6 @@ on:
 env:
   REPOSITORY_NAME: transformations-repository
   IMAGE_NAME: dbt-transformations
-  IMAGE_TAG: ${{ github.sha }}
   AWS_REGION: eu-central-1
 
 jobs:
@@ -41,6 +40,6 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
           docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:latest
-          docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:$IMAGE_TAG
+          docker tag $IMAGE_NAME:latest $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:${GITHUB_SHA::7}
           docker push $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:latest
-          docker push $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$REPOSITORY_NAME/$IMAGE_NAME:${GITHUB_SHA::7}
