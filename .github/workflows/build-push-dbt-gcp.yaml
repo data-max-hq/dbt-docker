@@ -32,7 +32,5 @@ jobs:
 
       - name: Push Docker Image to GCP Artifact Registry
         run: |-
-          docker tag $IMAGE_NAME:latest $GCP_REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:latest
-          docker tag $IMAGE_NAME:latest $GCP_REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:${GITHUB_SHA::7}
-          docker push $GCP_REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:latest
-          docker push $GCP_REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:${GITHUB_SHA::7}
+          gcloud builds submit --tag "$GCP_REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:${GITHUB_SHA::7}"
+          gcloud container images add-tag "$GCP_REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:${GITHUB_SHA::7}" $GCP_REGION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY_NAME/$IMAGE_NAME:latest
