@@ -24,10 +24,18 @@ COPY dbt_project_3 ./dbt_project_3
 RUN ["dbt", "deps", "--project-dir", "./dbt_project_3"]
 ```
 
-### Running a project locally
+### Running a project locally with Docker
+
 ```bash
 $  docker build -t <IMAGE_NAME>:<IMAGE_TAG> .
 $  docker run <IMAGE_NAME>:<IMAGE_TAG> dbt run --project-dir ./<project_dir> --profiles-dir ./<project_dir>/profiles
+```
+### Running a project locally just dbt
+```bash
+$  pip install -r requirements.txt
+$  cd <your_project_dir>
+$  dbt seed --profiles-dir ./profiles
+$  dbt run --profiles-dir ./profiles
 ```
 
 ## CI/CD
@@ -47,7 +55,7 @@ GCP_PROJECT_ID
 ```
 
 ## KubernetesPodOperator
-When running this these dbt images in Airflow KubernetesPodOperator:
+When running this these dbt images in Airflow `KubernetesPodOperator`:
 ```python
 
 
