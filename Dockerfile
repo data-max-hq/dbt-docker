@@ -21,9 +21,19 @@ RUN pip install -U pip
 RUN pip install -r requirements.txt
 
 RUN mkdir dbt_demo
-COPY dbt_demo/dbt_project.yml ./dbt_demo
+COPY dbt_project_1/dbt_project.yml ./dbt_demo
 RUN ["dbt", "deps", "--project-dir", "./dbt_demo"]
-COPY dbt_demo ./dbt_demo
+COPY dbt_project_1 ./dbt_demo
+
+
+RUN mkdir dbt_project_1
+COPY dbt_project_1 ./dbt_project_1
+RUN ["dbt", "deps", "--project-dir", "./dbt_project_1"]
+
+
+RUN mkdir dbt_project_2
+COPY dbt_project_2 ./dbt_project_2
+RUN ["dbt", "deps", "--project-dir", "./dbt_project_2"]
 
 # Run dbt
 # CMD ["dbt", "run"]
