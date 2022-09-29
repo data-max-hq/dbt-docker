@@ -68,6 +68,15 @@ GCP_PROJECT_ID
 ## KubernetesPodOperator
 When running this these dbt images in Airflow `KubernetesPodOperator`:
 ```python  
-
-  
+  migrate_data = KubernetesPodOperator(
+        namespace='default',
+        image='gcr.io/<project-id>/dbt-transformations:latest',
+        cmds=["dbt", "run"],
+        arguments=[
+            "--project-dir", "./<project_dir>", "--profiles-dir", "./<project_dir>/profiles"
+        ],
+        name="dbt_transformations",
+        task_id="dbt_transformations",
+        get_logs=True
+    )
 ```
