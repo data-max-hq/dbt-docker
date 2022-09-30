@@ -21,13 +21,11 @@ RUN pip install -U pip
 RUN pip install -r requirements.txt
 
 # Add dbt_project_1 to the docker image
-
 COPY dbt_project_1 ./dbt_project_1
 RUN ["dbt", "deps", "--project-dir", "./dbt_project_1"]
 
 # Add dbt_project_2 to the docker image
 # Repeat these line for every project in the repository
-
 COPY dbt_project_2 ./dbt_project_2
 RUN ["dbt", "deps", "--project-dir", "./dbt_project_2"]
 
