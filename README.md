@@ -70,7 +70,7 @@ When running this these dbt images in Airflow `KubernetesPodOperator`:
 ```python  
   migrate_data = KubernetesPodOperator(
         namespace='default',
-        image='gcr.io/<project-id>/dbt-transformations:latest',
+        image='europe-west1-docker.pkg.dev/PROJECT-ID/transformations-repository/dbt-transformations:latest',
         cmds=["dbt", "run"],
         arguments=[
             "--project-dir", "./<project_dir>", "--profiles-dir", "./<project_dir>/profiles"
