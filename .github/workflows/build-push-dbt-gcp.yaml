@@ -23,9 +23,6 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
-#
-#      - name: Build Docker Image
-#        run: docker build -t $IMAGE_NAME:latest .
 
       - name: Configure Docker Client
         run: gcloud auth configure-docker $GCP_REGION-docker.pkg.dev --quiet
